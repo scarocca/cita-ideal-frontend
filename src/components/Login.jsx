@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+
 const API_URL = "https://cita-ideal-backend.onrender.com";
 
 const Login = () => {
@@ -17,24 +18,23 @@ const Login = () => {
       const response = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-  email: email.trim(),    // 👈 CAMBIA 'username' POR 'email'
-  password: password.trim() 
-})
+        body: JSON.stringify({ email, password })
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem("user", JSON.stringify(data));
-        navigate("/admin/dashboard");
-      } else {
-        // Si el servidor responde 401, no intentamos hacer .json() porque viene vacío
-        setError("Credenciales incorrectas. Revisa el email y la clave en Railway.");
+      // Si no es 200 OK, no intentamos parsear JSON
+      if (!response.ok) {
+        setError("Credenciales inválidas. Revisa Railway y el hash de la clave.");
+        return; 
       }
+
+      const data = await response.json();
+      localStorage.setItem("user", JSON.stringify(data));
+      navigate("/admin/dashboard");
+      
     } catch (err) {
-      setError("No se pudo conectar con el servidor. ¿Está Eclipse corriendo?");
+      setError("No se pudo conectar con el servidor. Revisa los logs de Render.");
     }
-  };
+  }; // <--- AQUÍ FALTABA CERRAR LA FUNCIÓN
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#fafaf9] px-4 pt-20">
