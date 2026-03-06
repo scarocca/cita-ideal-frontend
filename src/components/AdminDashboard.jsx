@@ -6,7 +6,7 @@ import TablaGaleriaAdmin from './TablaGaleriaAdmin';
 import GestionPlanes from './GestionPlanes';
 import CrearPlanForm from './CrearPlanForm';
 import ActualizarFotoPlan from './ActualizarFotoPlan'; 
-
+const API_URL = "https://cita-ideal-backend.onrender.com";
 const AdminDashboard = () => {
   const [adminName, setAdminName] = useState('');
   const [reservas, setReservas] = useState([]);
@@ -39,7 +39,7 @@ const AdminDashboard = () => {
   const cargarReservas = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:8080/api/v1/reservas/todas');
+      const response = await fetch(`${API_URL}/api/v1/reservas/todas`);
       if (response.ok) {
         const data = await response.json();
         setReservas(data);
@@ -53,7 +53,7 @@ const AdminDashboard = () => {
 
   const handleCambiarEstado = async (id, nuevoEstado) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/reservas/${id}/estado`, {
+     const response = await fetch(`${API_URL}/api/v1/reservas/${id}/estado`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: nuevoEstado 
@@ -73,8 +73,7 @@ const AdminDashboard = () => {
   const eliminarReserva = async (id) => {
     if (window.confirm("¿Seguro que deseas eliminar esta reserva?")) {
       try {
-        const response = await fetch(`http://localhost:8080/api/v1/reservas/${id}`, {
-          method: 'DELETE'
+        const response = await fetch(`${API_URL}/api/v1/reservas/${id}`, {
         });
         if (response.ok) {
           setReservas(reservas.filter(res => res.id !== id));
@@ -100,8 +99,7 @@ const AdminDashboard = () => {
         estado: 'PENDIENTE'
       };
 
-      const response = await fetch('http://localhost:8080/api/v1/reservas/crear', {
-        method: 'POST',
+     const response = await fetch(`${API_URL}/api/v1/reservas/crear`, {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dataAEnviar)
       });

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+const API_URL = "https://cita-ideal-backend.onrender.com";
 const ActualizarFotoPlan = () => {
     const [planes, setPlanes] = useState([]);
     const [planSeleccionado, setPlanSeleccionado] = useState('');
@@ -8,7 +8,7 @@ const ActualizarFotoPlan = () => {
 
     // Cargamos los planes para llenar el select
     useEffect(() => {
-        fetch('http://localhost:8080/api/v1/planes/ver/activos')
+        fetch(`${API_URL}/api/v1/planes/ver/activos`)
             .then(res => res.json())
             .then(data => setPlanes(data))
             .catch(err => console.error("Error al cargar planes:", err));
@@ -26,7 +26,7 @@ const ActualizarFotoPlan = () => {
         formData.append('archivo', archivo);
 
         try {
-            const response = await fetch(`http://localhost:8080/api/v1/planes/${planSeleccionado}/subir-imagen`, {
+            const response = await fetch(`${API_URL}/api/v1/planes/${planSeleccionado}/subir-imagen`, {
                 method: 'POST',
                 body: formData
             });

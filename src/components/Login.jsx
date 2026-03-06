@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+const API_URL = "https://cita-ideal-backend.onrender.com";
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -13,11 +14,11 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await fetch("http://localhost:8080/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
-      });
+      const response = await fetch(`${API_URL}/api/auth/login`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ email, password })
+});
 
       if (response.ok) {
         const data = await response.json();

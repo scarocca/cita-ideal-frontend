@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import EditarPlanModal from './EditarPlanModal'; // Importamos el modal que creamos
-
+const API_URL = "https://cita-ideal-backend.onrender.com";
 const GestionPlanes = () => {
     const [planes, setPlanes] = useState([]);
     const [subiendoId, setSubiendoId] = useState(null);
@@ -14,7 +14,7 @@ const GestionPlanes = () => {
 
     const cargarPlanes = async () => {
         try {
-            const res = await fetch('http://localhost:8080/api/v1/planes/ver/activos');
+            const res = await fetch('${API_URL}/api/v1/planes/ver/activos');
             if (res.ok) {
                 const data = await res.json();
                 setPlanes(data);

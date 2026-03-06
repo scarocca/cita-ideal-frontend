@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+const API_URL = "https://cita-ideal-backend.onrender.com";
 
 const EditarPlanModal = ({ plan, onClose, onActualizar }) => {
     const [datos, setDatos] = useState({ ...plan });
@@ -10,7 +11,7 @@ const EditarPlanModal = ({ plan, onClose, onActualizar }) => {
         setCargando(true);
 
         try {
-            const response = await fetch(`http://localhost:8080/api/v1/planes/${plan.id}`, {
+            const response = await fetch(`${API_URL}/api/v1/planes/${plan.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

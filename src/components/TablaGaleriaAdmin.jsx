@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
-
+const API_URL = "https://cita-ideal-backend.onrender.com";
 const TablaGaleriaAdmin = ({ refresh }) => {
   const [fotos, setFotos] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/v1/galeria/todas')
+    fetch(`${API_URL}/api/v1/galeria/todas`)
       .then(res => res.json())
       .then(data => setFotos(data));
   }, [refresh]);
 
   const eliminarFoto = async (id) => {
     if (window.confirm("¿Estás seguro de eliminar esta foto?")) {
-      const response = await fetch(`http://localhost:8080/api/v1/galeria/${id}`, {
+      const response = await fetch(`${API_URL}/api/v1/galeria/${id}`, {
         method: 'DELETE'
       });
       if (response.ok) {

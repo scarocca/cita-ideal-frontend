@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
+const API_URL = "https://cita-ideal-backend.onrender.com";
 const GestionGaleria = ({ onFotoSubida }) => {
   const [archivo, setArchivo] = useState(null);
   const [titulo, setTitulo] = useState('');
@@ -22,7 +23,7 @@ const GestionGaleria = ({ onFotoSubida }) => {
     formData.append('titulo', titulo);
 
     try {
-      const response = await fetch('http://localhost:8080/api/v1/galeria/subir', {
+      const response = await fetch(`${API_URL}/api/v1/galeria/subir`, {
         method: 'POST',
         body: formData, // No agregues Content-Type, el navegador lo hará solo
       });

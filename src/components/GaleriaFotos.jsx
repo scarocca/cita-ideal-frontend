@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-
+const API_URL = "https://cita-ideal-backend.onrender.com";
 
 const GaleriaFotos = () => {
     const [imagenes, setImagenes] = useState([]);
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/v1/galeria/todas")
+        fetch('${API_URL}/api/v1/galeria/todas')
             .then(response => response.json())
             .then(data => setImagenes(data))
             .catch(error => console.error("Error cargando fotos:", error));
@@ -15,7 +15,7 @@ const GaleriaFotos = () => {
     const getImagenUrl = (archivo) => {
         if (!archivo) return 'https://via.placeholder.com/400';
         if (archivo.startsWith('http')) return archivo;
-        return `http://localhost:8080/imagenes/galeria/${archivo}`;
+        return `${API_URL}/imagenes/galeria/${archivo}`;
     };
 
     return (

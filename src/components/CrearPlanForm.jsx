@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+const API_URL = "https://cita-ideal-backend.onrender.com";
 const CrearPlanForm = ({ onPlanCreado }) => {
     const [archivo, setArchivo] = useState(null);
     const [datos, setDatos] = useState({ nombre: '', descripcion: '', precio: '', activo: true });
@@ -18,7 +18,7 @@ const CrearPlanForm = ({ onPlanCreado }) => {
         formData.append('activo', datos.activo);
 
         try {
-            const response = await fetch('http://localhost:8080/api/v1/planes/crear-con-foto', {
+            const response = await fetch('${API_URL}/api/v1/planes/crear-con-foto', {
                 method: 'POST',
                 body: formData
             });
