@@ -18,7 +18,7 @@ const Login = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
-  username: email.trim(), // El .trim() borra espacios accidentales
+  email: email.trim(),    // 👈 CAMBIA 'username' POR 'email'
   password: password.trim() 
 })
       });
