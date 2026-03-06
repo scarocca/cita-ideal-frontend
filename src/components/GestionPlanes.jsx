@@ -31,7 +31,7 @@ const GestionPlanes = () => {
         formData.append('archivo', archivo);
 
         try {
-            const response = await fetch(`http://localhost:8080/api/v1/planes/${id}/subir-imagen`, {
+           const response = await fetch(`${API_URL}/api/v1/planes/${id}/subir-imagen`, {
                 method: 'POST',
                 body: formData
             });
