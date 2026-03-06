@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+body {
+  margin: 0;
+  background-color: #0a0a0a;
+  color: white;
+ font-family: 'Outfit', sans-serif;
+  overflow-x: hidden;
+}
+/* Esto obliga al Navbar a ignorar CUALQUIER contenedor de React */
+nav {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  z-index: 99999 !important;
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-card {
+  animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
