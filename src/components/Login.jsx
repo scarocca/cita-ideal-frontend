@@ -15,22 +15,18 @@ const Login = () => {
 
     try {
       const response = await fetch(`${API_URL}/api/auth/login`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ email, password })
-});
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: email, password })
+      });
 
       if (response.ok) {
         const data = await response.json();
-        console.log("✅ Autenticado:", data);
-        
-        // Guardamos el nombre y el rol para usarlos en el Header/Panel
         localStorage.setItem("user", JSON.stringify(data));
-        
-        // Redirigimos al Panel de Administración
-        navigate("/admin/dashboard"); 
+        navigate("/admin/dashboard");
       } else {
-        setError("Credenciales incorrectas. Intenta de nuevo.");
+        // Si el servidor responde 401, no intentamos hacer .json() porque viene vacío
+        setError("Credenciales incorrectas. Revisa el email y la clave en Railway.");
       }
     } catch (err) {
       setError("No se pudo conectar con el servidor. ¿Está Eclipse corriendo?");
@@ -39,7 +35,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#fafaf9] px-4 pt-20">
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         className="bg-white p-10 rounded-[2.5rem] shadow-xl border border-orange-100 w-full max-w-md"
@@ -60,8 +56,8 @@ const Login = () => {
             <label className="block text-xs uppercase tracking-[0.2em] text-rose-900/60 font-bold mb-2 ml-1">
               Correo Electrónico
             </label>
-            <input 
-              type="email" 
+            <input
+              type="email"
               required
               className="w-full px-6 py-4 rounded-2xl bg-orange-50/30 border border-orange-100 focus:ring-2 focus:ring-rose-400 focus:bg-white outline-none transition-all text-rose-900"
               placeholder="sergio@citaideal.cl"
@@ -74,8 +70,8 @@ const Login = () => {
             <label className="block text-xs uppercase tracking-[0.2em] text-rose-900/60 font-bold mb-2 ml-1">
               Contraseña
             </label>
-            <input 
-              type="password" 
+            <input
+              type="password"
               required
               className="w-full px-6 py-4 rounded-2xl bg-orange-50/30 border border-orange-100 focus:ring-2 focus:ring-rose-400 focus:bg-white outline-none transition-all text-rose-900"
               placeholder="••••••••"
@@ -84,7 +80,7 @@ const Login = () => {
             />
           </div>
 
-          <button 
+          <button
             type="submit"
             className="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-rose-200 uppercase tracking-widest text-sm transform active:scale-95"
           >
