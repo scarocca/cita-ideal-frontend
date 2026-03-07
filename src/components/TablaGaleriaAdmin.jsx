@@ -23,20 +23,26 @@ const TablaGaleriaAdmin = ({ refresh }) => {
   return (
     <div className="mt-8 bg-white rounded-[2rem] p-8 border border-orange-100 shadow-sm">
       <h3 className="text-xl font-serif font-bold text-rose-900 mb-6">Fotos en Galería</h3>
-      
+
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
         {fotos.map(foto => (
           <div key={foto.id} className="flex flex-col gap-2">
             {/* Contenedor de la imagen */}
             <div className="relative group rounded-2xl overflow-hidden aspect-square border border-orange-50 shadow-sm">
-              <img 
-                src={foto.archivo} 
-                alt={foto.titulo} 
-                className="w-full h-full object-cover" 
+              <img
+                // Cambiamos foto.archivo por foto.url (o fotoUrl si así lo pusiste en Java)
+                src={foto.url || foto.fotoUrl || foto.archivo}
+                alt={foto.titulo}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  console.log("Error cargando:", e.target.src);
+                  // Opcional: poner una imagen de respaldo si el link falla
+                  // e.target.src = "https://via.placeholder.com/150"; 
+                }}
               />
               {/* Botón de eliminar que aparece al pasar el mouse */}
               <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <button 
+                <button
                   onClick={() => eliminarFoto(foto.id)}
                   className="bg-rose-600 text-white p-2 rounded-xl hover:bg-rose-800 shadow-lg transform scale-90 group-hover:scale-100 transition-transform"
                 >
@@ -46,7 +52,7 @@ const TablaGaleriaAdmin = ({ refresh }) => {
                 </button>
               </div>
             </div>
-            
+
             {/* TÍTULO VISIBLE ABAJO */}
             <p className="text-[11px] font-bold text-rose-900 truncate px-1 uppercase tracking-wider text-center">
               {foto.titulo || "Sin título"}
