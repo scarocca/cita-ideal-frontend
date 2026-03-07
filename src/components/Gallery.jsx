@@ -1,9 +1,19 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// Sub-componente para manejar la lógica de carga de cada tarjeta individualmente
 const PlanCard = ({ plan, index, onVerDetalle }) => {
   const [cargando, setCargando] = useState(true);
+
+  // 1. Lógica unificada para obtener la imagen (igual que en Galería)
+  const getImagenUrl = (p) => {
+    // Buscamos en todos los nombres posibles que vienen del Backend
+    const link = p.fotoUrl || p.url || p.imagenUrl || p.imagen;
+    
+    if (!link) return 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8';
+    
+    // Forzamos HTTPS para evitar bloqueos
+    return link.replace("http://", "https://");
+  };
 
   return (
     <motion.div
@@ -14,10 +24,7 @@ const PlanCard = ({ plan, index, onVerDetalle }) => {
       whileHover={{ y: -8 }}
       className="group bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-orange-50 flex flex-col h-full"
     >
-      {/* Contenedor de Imagen con Skeleton */}
       <div className="relative h-48 overflow-hidden bg-gray-100">
-
-        {/* Efecto Skeleton */}
         <AnimatePresence>
           {cargando && (
             <motion.div
@@ -28,11 +35,18 @@ const PlanCard = ({ plan, index, onVerDetalle }) => {
         </AnimatePresence>
 
         <img
-          src={plan.imagenUrl || plan.imagen || 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8'}
-          className={`w-full h-full object-cover transition-all duration-700 group-hover:scale-105 ${cargando ? 'opacity-0' : 'opacity-100'
-            }`}
+          // 2. Usamos nuestra función de limpieza de URL
+          src={getImagenUrl(plan)}
+          className={`w-full h-full object-cover transition-all duration-700 group-hover:scale-105 ${
+            cargando ? 'opacity-0' : 'opacity-100'
+          }`}
           alt={plan.nombre}
           onLoad={() => setCargando(false)}
+          // 3. Si la imagen falla, quitamos el cargando para que no quede el cuadro gris
+          onError={(e) => {
+            setCargando(false);
+            e.target.src = 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8';
+          }}
         />
 
         <div className="absolute top-3 right-3 z-20 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">
@@ -40,11 +54,9 @@ const PlanCard = ({ plan, index, onVerDetalle }) => {
         </div>
       </div>
 
-      {/* Contenido de la Tarjeta */}
       <div className="p-6 flex flex-col flex-grow">
         <h3 className="text-xl font-bold text-rose-900 mb-2">{plan.nombre}</h3>
-
-        {/* En tu Gallery.jsx */}
+        
         <p className="text-gray-500 font-light text-xs leading-relaxed mb-4 line-clamp-2 whitespace-pre-wrap">
           {plan.descripcion}
         </p>
@@ -89,14 +101,21 @@ const Gallery = ({ planes = [], onVerDetalle }) => {
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {planes.map((plan, index) => (
-            <PlanCard
-              key={plan.id}
-              plan={plan}
-              index={index}
-              onVerDetalle={onVerDetalle}
-            />
-          ))}
+          {/* 4. Verificación de seguridad por si 'planes' llega vacío o nulo */}
+          {planes && planes.length > 0 ? (
+            planes.map((plan, index) => (
+              <PlanCard
+                key={plan.id || index}
+                plan={plan}
+                index={index}
+                onVerDetalle={onVerDetalle}
+              />
+            ))
+          ) : (
+            <div className="col-span-full text-center py-10 text-gray-400 italic">
+              No hay planes disponibles en este momento.
+            </div>
+          )}
         </div>
       </div>
     </section>

@@ -20,6 +20,7 @@ const Login = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
       });
+      
 
       // Si no es 200 OK, no intentamos parsear JSON
       if (!response.ok) {
