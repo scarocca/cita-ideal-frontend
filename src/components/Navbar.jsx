@@ -1,108 +1,48 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from 'react';
+import { Link } from 'react-router-dom'; // Importante para navegar entre rutas
+import { motion } from 'framer-motion';
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate();
-
-  // Función para manejar la navegación y cerrar el menú móvil
-  const handleNavClick = (path, isAnchor = false) => {
-    setIsOpen(false);
-    if (isAnchor) {
-      navigate('/');
-      setTimeout(() => {
-        const element = document.getElementById('experiencias');
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 150);
-    } else {
-      navigate(path);
-      window.scrollTo(0, 0);
-    }
-  };
-
   return (
-    <nav className="fixed top-0 left-0 right-0 z-[9999] bg-white/90 backdrop-blur-md border-b border-orange-50 shadow-sm">
-      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+    <nav className="fixed top-0 w-full z-[100] bg-white/70 backdrop-blur-md border-b border-rose-100/50 h-20 flex items-center overflow-hidden">
+      <div className="max-w-7xl mx-auto w-full px-6 flex justify-between items-center relative z-10">
         
-        {/* LOGO CON EL "BOTÓN SECRETO" EN EL CORAZÓN */}
+        {/* LOGO + CORAZÓN LOGIN */}
         <div className="flex items-center gap-2">
-          <Link 
-            to="/" 
-            onClick={() => setIsOpen(false)} 
-            className="text-2xl font-serif font-bold text-rose-900 tracking-tighter"
-          >
-            Cita<span className="text-orange-500">Ideal</span>
+          <Link to="/login" className="opacity-5 hover:opacity-100 transition-opacity duration-1000 text-rose-300 text-[10px] cursor-default">
+            ❤
           </Link>
-
-          {/* EL CORAZÓN: Ahora es el único acceso al Login */}
-          <Link to="/gestion-interna-cita-ideal">
-            <motion.div
-              initial={{ opacity: 0.6, scale: 0.9 }}
-              animate={{ opacity: [0.6, 1, 0.6], scale: [0.9, 1.05, 0.9] }}
-              transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-              className="ml-1 flex items-center justify-center w-5 h-5 bg-orange-400 rounded-full shadow-sm shadow-orange-200 cursor-pointer"
-              title="Cita Ideal"
-            >
-              <svg 
-                viewBox="0 0 24 24" 
-                className="w-3 h-3 fill-white" 
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-              </svg>
-            </motion.div>
+          <Link to="/" className="text-xl md:text-2xl font-serif font-bold text-rose-900 tracking-tight">
+            Tu <span className="text-rose-600">Cita</span><span className="text-orange-500 italic">Ideal</span>
           </Link>
         </div>
 
-        {/* MENÚ ESCRITORIO (Sin palabra "Acceso") */}
-        <div className="hidden md:flex items-center gap-8">
-          <button onClick={() => handleNavClick('/')} className="text-sm font-medium text-rose-950/70 hover:text-orange-600 transition-colors">Inicio</button>
-          <button onClick={() => handleNavClick('/', true)} className="text-sm font-medium text-rose-950/70 hover:text-orange-600 transition-colors">Experiencias</button>
-          <button onClick={() => handleNavClick('/galeria')} className="text-sm font-medium text-rose-950/70 hover:text-orange-600 transition-colors">Galería</button>
-        </div>
+        {/* MENÚ DE NAVEGACIÓN */}
+        <div className="hidden md:flex items-center gap-7 font-medium text-rose-800/80 text-sm uppercase tracking-widest">
+          
+          <Link to="/" className="hover:text-rose-600 transition-all flex items-center gap-2 group">
+            <span className="text-lg group-hover:scale-125 transition-transform duration-300">🏠</span>
+            Inicio
+          </Link>
 
-        {/* BOTÓN HAMBURGUESA (Móvil) */}
-        <button 
-          onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden p-2 text-rose-900 focus:outline-none"
-        >
-          <div className="w-8 h-8 flex flex-col justify-center items-center gap-1.5">
-            <motion.span 
-              animate={isOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
-              className="w-7 h-0.5 bg-rose-900 block rounded-full"
-            />
-            <motion.span 
-              animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
-              className="w-7 h-0.5 bg-rose-900 block rounded-full"
-            />
-            <motion.span 
-              animate={isOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
-              className="w-7 h-0.5 bg-rose-900 block rounded-full"
-            />
-          </div>
-        </button>
+          {/* Si Planes está en el Home, usa href="/#planes" o Link to="/#planes" */}
+          <a href="/#experiencias" className="hover:text-rose-600 transition-all flex items-center gap-2 group">
+            <span className="text-lg group-hover:scale-125 transition-transform duration-300">✨</span>
+            Planes
+          </a>
+
+          {/* RUTA A LA OTRA VENTANA */}
+          <Link to="/galeria" className="hover:text-rose-600 transition-all flex items-center gap-2 group">
+            <span className="text-lg group-hover:scale-125 transition-transform duration-300">📸</span>
+            Galería
+          </Link>
+
+          <a href="/#contacto" className="bg-rose-600 text-white px-6 py-2.5 rounded-full hover:bg-rose-700 transition-all shadow-lg shadow-rose-200 flex items-center gap-2 active:scale-95">
+            <span>💌</span>
+            Reservar
+          </a>
+        </div>
       </div>
-
-      {/* MENÚ DESPLEGABLE MÓVIL (Sin palabra "Panel" ni "Acceso") */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white border-b border-orange-100 overflow-hidden"
-          >
-            <div className="flex flex-col p-8 gap-6 font-serif italic text-xl text-rose-900">
-              <button onClick={() => handleNavClick('/')} className="text-left border-b border-orange-50 pb-2">Inicio</button>
-              <button onClick={() => handleNavClick('/', true)} className="text-left border-b border-orange-50 pb-2">Experiencias</button>
-              <button onClick={() => handleNavClick('/galeria')} className="text-left border-b border-orange-50 pb-2">Galería</button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </nav>
   );
 };

@@ -35,7 +35,7 @@ function App() {
   return (
     <Router>
       <Navbar />
-      <div className="min-h-screen bg-[#fafaf9] flex flex-col pt-20">
+      <div className="min-h-screen bg-transparent flex flex-col pt-20">
         <div className="flex-grow">
           <Routes>
             <Route path="/" element={

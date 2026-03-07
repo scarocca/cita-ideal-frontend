@@ -57,7 +57,7 @@ const PlanCard = ({ plan, index, onVerDetalle }) => {
 };
 
 const Gallery = ({ planes = [], onVerDetalle }) => (
-  <section id="experiencias" className="py-12 px-6 bg-[#fafaf9]">
+  <section id="experiencias" className="py-20 bg-transparent relative z-10">
     <div className="max-w-7xl mx-auto">
       <h2 className="text-3xl font-serif font-bold text-rose-900 text-center mb-10">Experiencias a la Orilla del Mar</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">

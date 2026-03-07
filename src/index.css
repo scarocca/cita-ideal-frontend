@@ -1,31 +1,45 @@
 @import "tailwindcss";
 
-body {
+/* 1. Fondo base crema suave */
+html, body {
   margin: 0;
-  background-color: #0a0a0a;
-  color: white;
- font-family: 'Outfit', sans-serif;
-  overflow-x: hidden;
-}
-/* Esto obliga al Navbar a ignorar CUALQUIER contenedor de React */
-nav {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100vw !important;
-  z-index: 99999 !important;
-}
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  padding: 0;
+  background-color: #fafaf9 !important;
+  position: relative;
+  min-height: 100vh;
 }
 
-.animate-card {
-  animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+/* 2. CAPA ARTÍSTICA PURIFICADA: 😍 + 💖 (Cero Pétalos) */
+body::after {
+  content: "" !important;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 5 !important;
+  pointer-events: none;
+  
+  /* Ajustamos la opacidad para que sean sutiles (0.1 a 0.2) */
+  opacity: 0.15; 
+
+  /* DOS CAPAS DE DIBUJO DESFASADAS PARA ROMPER LA CUADRÍCULA */
+  background-image: 
+    /* CAPA A: Emoji 😍 (separados por 250px) */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 100 100'%3E%3Ctext y='32' font-size='16'%3E😍%3C/text%3E%3C/svg%3E"),
+    
+    /* CAPA B: Corazones Sólidos (separados por 180px) */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 100 100'%3E%3Cpath fill='%23e11d48' d='M30 35.35l-1.45-1.32C23.4 29.36 20 26.28 20 22.5 20 19.42 22.42 17 25.5 17c1.74 0 3.41.81 4.5 2.09C31.09 17.81 32.76 17 34.5 17 37.58 17 40 19.42 40 22.5c0 3.78-3.4 6.86-8.55 11.54L30 35.35z'/%3E%3C/svg%3E");
+
+  /* Posiciones iniciales para que NO coincidan */
+  background-position: 20% 20%, 60% 75%;
+  background-repeat: repeat;
+  
+  /* Tamaños diferentes para efecto esparcido */
+  background-size: 250px 250px, 180px 180px;
+  background-attachment: fixed;
+}
+
+/* 3. Tu App encima de todo */
+#root {
+  position: relative;
+  z-index: 10;
+  background: transparent !important;
 }
