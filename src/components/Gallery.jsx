@@ -4,14 +4,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 const PlanCard = ({ plan, index, onVerDetalle }) => {
   const [cargando, setCargando] = useState(true);
 
-  // 1. Lógica unificada para obtener la imagen (igual que en Galería)
   const getImagenUrl = (p) => {
-    // Buscamos en todos los nombres posibles que vienen del Backend
-    const link = p.fotoUrl || p.url || p.imagenUrl || p.imagen;
-    
+    // ✅ CORREGIDO: Busca imagenUrl (Java) o variantes de Cloudinary
+    const link = p.imagenUrl || p.fotoUrl || p.url || p.imagen;
     if (!link) return 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8';
-    
-    // Forzamos HTTPS para evitar bloqueos
     return link.replace("http://", "https://");
   };
 
@@ -21,64 +17,35 @@ const PlanCard = ({ plan, index, onVerDetalle }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      whileHover={{ y: -8 }}
       className="group bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-orange-50 flex flex-col h-full"
     >
       <div className="relative h-48 overflow-hidden bg-gray-100">
         <AnimatePresence>
           {cargando && (
-            <motion.div
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 z-10 bg-gradient-to-r from-gray-200 via-orange-50 to-gray-200 animate-pulse"
-            />
+            <motion.div exit={{ opacity: 0 }} className="absolute inset-0 z-10 bg-orange-50 animate-pulse" />
           )}
         </AnimatePresence>
-
         <img
-          // 2. Usamos nuestra función de limpieza de URL
           src={getImagenUrl(plan)}
-          className={`w-full h-full object-cover transition-all duration-700 group-hover:scale-105 ${
-            cargando ? 'opacity-0' : 'opacity-100'
-          }`}
+          className={`w-full h-full object-cover transition-all duration-700 ${cargando ? 'opacity-0' : 'opacity-100'}`}
           alt={plan.nombre}
           onLoad={() => setCargando(false)}
-          // 3. Si la imagen falla, quitamos el cargando para que no quede el cuadro gris
-          onError={(e) => {
-            setCargando(false);
-            e.target.src = 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8';
-          }}
+          onError={(e) => { setCargando(false); e.target.src = 'https://via.placeholder.com/400'; }}
         />
-
-        <div className="absolute top-3 right-3 z-20 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">
-          <span className="text-rose-600 font-bold text-[10px] uppercase">Destacado</span>
-        </div>
       </div>
 
       <div className="p-6 flex flex-col flex-grow">
         <h3 className="text-xl font-bold text-rose-900 mb-2">{plan.nombre}</h3>
-        
-        <p className="text-gray-500 font-light text-xs leading-relaxed mb-4 line-clamp-2 whitespace-pre-wrap">
-          {plan.descripcion}
-        </p>
-
-        <div className="flex gap-3 mb-6">
-          <span title="Decoración" className="text-base">✨</span>
-          <span title="Tabla Gourmet" className="text-base">🧀</span>
-          <span title="Bebestible" className="text-base">🥂</span>
-        </div>
-
+        <p className="text-gray-500 text-xs mb-4 line-clamp-2">{plan.descripcion}</p>
         <div className="mt-auto flex justify-between items-center pt-4 border-t border-orange-50">
           <div>
             <span className="block text-gray-400 text-[9px] uppercase tracking-widest">Desde</span>
             <span className="text-xl font-black text-rose-600">
+              {/* ✅ CORREGIDO: precioBase */}
               ${new Intl.NumberFormat('es-CL').format(plan.precioBase || 0)}
             </span>
           </div>
-
-          <button
-            onClick={() => onVerDetalle(plan)}
-            className="bg-orange-500 hover:bg-rose-600 text-white p-3 rounded-xl transition-all duration-300 shadow-md shadow-orange-100 active:scale-95"
-          >
+          <button onClick={() => onVerDetalle(plan)} className="bg-orange-500 text-white p-3 rounded-xl shadow-md">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
@@ -89,37 +56,19 @@ const PlanCard = ({ plan, index, onVerDetalle }) => {
   );
 };
 
-const Gallery = ({ planes = [], onVerDetalle }) => {
-  return (
-    <section id="experiencias" className="py-12 px-6 md:px-16 relative z-10 bg-[#fafaf9]">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl font-serif font-bold text-rose-900 mb-2 text-center">
-          Experiencias a la Orilla del Mar
-        </h2>
-        <p className="text-center text-orange-700/70 text-sm font-light mb-10 italic">
-          "Decoración exclusiva, tablas gourmet y el sonido de las olas"
-        </p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {/* 4. Verificación de seguridad por si 'planes' llega vacío o nulo */}
-          {planes && planes.length > 0 ? (
-            planes.map((plan, index) => (
-              <PlanCard
-                key={plan.id || index}
-                plan={plan}
-                index={index}
-                onVerDetalle={onVerDetalle}
-              />
-            ))
-          ) : (
-            <div className="col-span-full text-center py-10 text-gray-400 italic">
-              No hay planes disponibles en este momento.
-            </div>
-          )}
-        </div>
+const Gallery = ({ planes = [], onVerDetalle }) => (
+  <section id="experiencias" className="py-12 px-6 bg-[#fafaf9]">
+    <div className="max-w-7xl mx-auto">
+      <h2 className="text-3xl font-serif font-bold text-rose-900 text-center mb-10">Experiencias a la Orilla del Mar</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {planes.length > 0 ? (
+          planes.map((plan, index) => <PlanCard key={plan.id || index} plan={plan} index={index} onVerDetalle={onVerDetalle} />)
+        ) : (
+          <p className="col-span-full text-center text-gray-400 italic">No hay planes disponibles.</p>
+        )}
       </div>
-    </section>
-  );
-};
+    </div>
+  </section>
+);
 
 export default Gallery;
