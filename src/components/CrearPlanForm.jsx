@@ -5,36 +5,47 @@ const CrearPlanForm = ({ onPlanCreado }) => {
     const [datos, setDatos] = useState({ nombre: '', descripcion: '', precio: '', activo: true });
     const [cargando, setCargando] = useState(false);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!archivo) return alert("Por favor, selecciona una imagen para el plan.");
+   const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!archivo) return alert("Por favor, selecciona una imagen para el plan.");
 
-        setCargando(true);
-        const formData = new FormData();
-        formData.append('archivo', archivo);
-        formData.append('nombre', datos.nombre);
-        formData.append('descripcion', datos.descripcion);
-        formData.append('precioBase', datos.precio); // Usamos precioBase como en tu Entidad Java
-        formData.append('activo', datos.activo);
+    // Validación de longitud según tu Entidad Java (5 a 25 caracteres)
+    if (datos.nombre.length < 5 || datos.nombre.length > 25) {
+      return alert("El nombre debe tener entre 5 y 25 caracteres.");
+    }
 
-        try {
-            const response = await fetch('${API_URL}/api/v1/planes/crear-con-foto', {
-                method: 'POST',
-                body: formData
-            });
+    setCargando(true);
+    const formData = new FormData();
+    formData.append('archivo', archivo);
+    formData.append('nombre', datos.nombre);
+    formData.append('descripcion', datos.descripcion);
+    formData.append('precioBase', datos.precio); 
+    formData.append('activo', datos.activo);
 
-            if (response.ok) {
-                alert("🚀 ¡Nuevo Plan creado con éxito!");
-                setDatos({ nombre: '', descripcion: '', precio: '', activo: true });
-                setArchivo(null);
-                if (onPlanCreado) onPlanCreado(); 
-            }
-        } catch (error) {
-            console.error("Error al crear plan:", error);
-        } finally {
-            setCargando(false);
-        }
-    };
+    try {
+      // ✅ CORREGIDO: Usamos backticks ` y la ruta correcta
+      const response = await fetch(`${API_URL}/api/v1/planes/crear-con-foto`, {
+        method: 'POST',
+        body: formData // No ponemos headers de Content-Type, el navegador lo hace solo con FormData
+      });
+
+      if (response.ok) {
+        alert("🚀 ¡Nuevo Plan creado con éxito!");
+        setDatos({ nombre: '', descripcion: '', precio: '', activo: true });
+        setArchivo(null);
+        if (onPlanCreado) onPlanCreado(); 
+      } else {
+        const errorText = await response.text();
+        console.error("Respuesta del servidor:", errorText);
+        alert("❌ Error del servidor: " + errorText);
+      }
+    } catch (error) {
+      console.error("Error al crear plan:", error);
+      alert("❌ No se pudo conectar con el servidor.");
+    } finally {
+      setCargando(false);
+    }
+  };
 
     return (
         <div className="bg-white p-8 rounded-[2rem] shadow-xl border-2 border-orange-100 mb-10">
