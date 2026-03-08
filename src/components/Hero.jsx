@@ -59,8 +59,21 @@ const Hero = () => {
 
         <button
           onClick={() => {
-            const el = document.getElementById('planes');
-            if (el) el.scrollIntoView({ behavior: 'smooth' });
+            // ✅ Cambiado de 'planes' a 'experiencias'
+            const el = document.getElementById('experiencias');
+            if (el) {
+              // Calculamos la posición un poco más arriba para que el Navbar no estorbe
+              const offset = 80; // Altura de tu Navbar
+              const bodyRect = document.body.getBoundingClientRect().top;
+              const elementRect = el.getBoundingClientRect().top;
+              const elementPosition = elementRect - bodyRect;
+              const offsetPosition = elementPosition - offset;
+
+              window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+              });
+            }
           }}
           className="bg-rose-600 hover:bg-rose-700 text-white px-8 md:px-12 py-4 md:py-5 rounded-full font-bold text-base md:text-xl shadow-2xl shadow-rose-200 transition-all transform hover:scale-105 active:scale-95 border-b-4 border-rose-800"
         >
