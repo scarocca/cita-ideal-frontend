@@ -1,6 +1,10 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import React, { useState, useEffect } from 'react';
+// 🚨 IMPORTANTE: Añadir motion aquí
+import { motion } from 'framer-motion'; 
+
+// Componentes
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Gallery from './components/Gallery';
@@ -9,8 +13,17 @@ import GaleriaFotos from './components/GaleriaFotos';
 import Login from './components/Login';
 import AdminDashboard from './components/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
+import SplashCursor from './components/SplashCursor';
 
 const API_URL = "https://cita-ideal-backend.onrender.com";
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+};
 
 function App() {
   const [planes, setPlanes] = useState([]);
@@ -19,7 +32,6 @@ function App() {
   useEffect(() => {
     const cargarPlanes = async () => {
       try {
-        // ✅ CORREGIDO: Ruta exacta del Controller con Backticks
         const response = await fetch(`${API_URL}/api/v1/planes/ver/activos`);
         if (response.ok) {
           const data = await response.json();
@@ -34,7 +46,15 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
+      <SplashCursor 
+        SPLAT_RADIUS={0.3} 
+        CURL={2} 
+        DENSITY_DISSIPATION={3} 
+      />
+
       <Navbar />
+      
       <div className="min-h-screen bg-transparent flex flex-col pt-20">
         <div className="flex-grow">
           <Routes>
@@ -47,22 +67,38 @@ function App() {
                     onVerDetalle={(plan) => setPlanSeleccionado(plan)}
                   />
 
+                  {/* PORTAL PARA EL MODAL DE DETALLE */}
                   {planSeleccionado && ReactDOM.createPortal(
-                    <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
-                      <div className="bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-[2rem] shadow-2xl relative">
+                    <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4">
+                      {/* Fondo oscuro animado que permite cerrar al hacer clic fuera */}
+                      <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        onClick={() => setPlanSeleccionado(null)}
+                        className="absolute inset-0 bg-black/80 backdrop-blur-md"
+                      />
+
+                      {/* Contenedor del Modal con motion */}
+                      <motion.div 
+                        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        className="bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-[2.5rem] shadow-2xl relative z-[100000]"
+                      >
                         <PlanDetalle
-                          plan={planSeleccionado}
+                          plan={planSeleccionado} 
                           onClose={() => setPlanSeleccionado(null)}
                         />
-                      </div>
+                      </motion.div>
                     </div>,
                     document.getElementById('modal-root')
                   )}
                 </main>
               </>
             } />
+
             <Route path="/galeria" element={<GaleriaFotos />} />
-            <Route path="/gestion-interna-cita-ideal" element={<Login />} />
+            <Route path="/login" element={<Login />} />
+            
             <Route
               path="/admin/dashboard"
               element={
@@ -73,9 +109,13 @@ function App() {
             />
           </Routes>
         </div>
-        <footer className="py-10 bg-white border-t border-orange-100 text-center">
-          <p className="text-[10px] uppercase tracking-[0.2em] text-orange-900/40 font-bold">
-            &copy; 2026 CitaIdeal.cl — Sergio Carocca Dev
+
+        <footer className="py-12 bg-white/50 backdrop-blur-sm border-t border-orange-100 text-center">
+          <p className="text-[10px] uppercase tracking-[0.3em] text-rose-900/60 font-bold mb-2">
+            Tu Cita Ideal — Experiencias Románticas
+          </p>
+          <p className="text-[9px] uppercase tracking-[0.1em] text-orange-900/40">
+            &copy; 2026 — Sergio Carocca Dev
           </p>
         </footer>
       </div>
