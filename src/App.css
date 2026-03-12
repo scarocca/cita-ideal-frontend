@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "react-datepicker/dist/react-datepicker.css";
 
 body {
   margin: 0;
@@ -21,4 +22,85 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #e50914; /* Rojo Netflix */
+}
+/* Personalización del DatePicker */
+.tucitaideal-calendar {
+  border-radius: 1.5rem !important;
+  border: none !important;
+  font-family: 'Inter', sans-serif !important;
+  box-shadow: 0 10px 25px -5px rgba(251, 146, 60, 0.1);
+}
+
+.react-datepicker__header {
+  background-color: #fff !important;
+  border-bottom: 1px solid #fff7ed !important;
+  border-top-right-radius: 1.5rem !important;
+  border-top-left-radius: 1.5rem !important;
+}
+
+.react-datepicker__day--selected {
+  background-color: #e11d48 !important; /* rose-600 */
+  border-radius: 0.75rem !important;
+}
+
+.react-datepicker__day--disabled {
+  color: #fed7aa !important; /* orange-200 */
+  text-decoration: line-through;
+}
+
+.react-datepicker__day:hover {
+  background-color: #fff7ed !important;
+  border-radius: 0.75rem !important;
+}
+/* --- Personalización del Calendario CitaIdeal --- */
+
+/* 1. Fondo del contenedor y cabecera */
+.tucitaideal-calendar {
+  border: none !important;
+  background-color: white !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.react-datepicker__header {
+  background-color: white !important;
+  border-bottom: 1px solid #fff7ed !important;
+}
+
+/* 2. DÍAS HABILITADOS (Sábados, Domingos y Feriados) */
+/* Les damos un color Rose-600 y los ponemos en negrita */
+.react-datepicker__day:not(.react-datepicker__day--disabled):not(.react-datepicker__day--outside-month) {
+  color: #e11d48 !important; 
+  font-weight: 800 !important;
+  background-color: #fff1f2 !important; /* Un rosa muy tenue de fondo */
+  border-radius: 0.75rem !important;
+}
+
+/* 3. DÍA SELECCIONADO */
+.react-datepicker__day--selected {
+  background-color: #e11d48 !important; /* Rojo CitaIdeal */
+  color: white !important;
+  box-shadow: 0 4px 10px rgba(225, 29, 72, 0.4);
+}
+
+/* 4. DÍAS DESHABILITADOS (Los que se veían muy gris) */
+/* Los hacemos aún más sutiles para que no distraigan */
+.react-datepicker__day--disabled {
+  color: #f1f5f9 !important; /* Gris ultra claro */
+  background-color: transparent !important;
+  font-weight: 300 !important;
+  text-decoration: none !important;
+}
+
+/* 5. NOMBRES DE LOS DÍAS (Lu, Ma, Mi...) */
+.react-datepicker__day-name {
+  color: #f97316 !important; /* Naranja para los títulos de los días */
+  font-weight: bold !important;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+}
+
+/* 6. EFECTO HOVER (Al pasar el mouse) */
+.react-datepicker__day:hover:not(.react-datepicker__day--disabled) {
+  background-color: #fb7185 !important;
+  color: white !important;
 }
