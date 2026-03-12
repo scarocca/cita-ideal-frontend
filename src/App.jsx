@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import React, { useState, useEffect } from 'react';
-// 🚨 IMPORTANTE: Añadir motion aquí
 import { motion } from 'framer-motion'; 
 
 // Componentes
+import VisitTracker from './components/VisitTracker';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Gallery from './components/Gallery';
@@ -47,17 +47,23 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
+      {/* Efecto visual de fondo */}
       <SplashCursor 
         SPLAT_RADIUS={0.3} 
         CURL={2} 
         DENSITY_DISSIPATION={3} 
       />
-
-      <Navbar />
       
+      {/* 🟢 CONTADOR INVISIBLE: Ejecutándose en todo el sitio */}
+      <VisitTracker /> 
+      
+      {/* Barra de navegación fija */}
+      <Navbar />
+
       <div className="min-h-screen bg-transparent flex flex-col pt-20">
         <div className="flex-grow">
           <Routes>
+            {/* RUTA PRINCIPAL (HOME) */}
             <Route path="/" element={
               <>
                 <Hero />
@@ -70,15 +76,12 @@ function App() {
                   {/* PORTAL PARA EL MODAL DE DETALLE */}
                   {planSeleccionado && ReactDOM.createPortal(
                     <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4">
-                      {/* Fondo oscuro animado que permite cerrar al hacer clic fuera */}
                       <motion.div 
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         onClick={() => setPlanSeleccionado(null)}
                         className="absolute inset-0 bg-black/80 backdrop-blur-md"
                       />
-
-                      {/* Contenedor del Modal con motion */}
                       <motion.div 
                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -96,9 +99,11 @@ function App() {
               </>
             } />
 
+            {/* OTRAS RUTAS PÚBLICAS */}
             <Route path="/galeria" element={<GaleriaFotos />} />
             <Route path="/login" element={<Login />} />
             
+            {/* RUTA PROTEGIDA DE ADMINISTRACIÓN */}
             <Route
               path="/admin/dashboard"
               element={
@@ -110,6 +115,7 @@ function App() {
           </Routes>
         </div>
 
+        {/* FOOTER COHERENTE */}
         <footer className="py-12 bg-white/50 backdrop-blur-sm border-t border-orange-100 text-center">
           <p className="text-[10px] uppercase tracking-[0.3em] text-rose-900/60 font-bold mb-2">
             Tu Cita Ideal — Experiencias Románticas

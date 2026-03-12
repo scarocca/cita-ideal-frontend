@@ -6,7 +6,10 @@ import TablaGaleriaAdmin from './TablaGaleriaAdmin';
 import GestionPlanes from './GestionPlanes';
 import CrearPlanForm from './CrearPlanForm';
 import ActualizarFotoPlan from './ActualizarFotoPlan'; 
+import ContadorVisitasAdmin from './ContadorVisitasAdmin';
+
 const API_URL = "https://cita-ideal-backend.onrender.com";
+
 const AdminDashboard = () => {
   const [adminName, setAdminName] = useState('');
   const [reservas, setReservas] = useState([]);
@@ -74,6 +77,7 @@ const AdminDashboard = () => {
     if (window.confirm("¿Seguro que deseas eliminar esta reserva?")) {
       try {
         const response = await fetch(`${API_URL}/api/v1/reservas/${id}`, {
+          method: 'DELETE' // Agregué el método DELETE que faltaba
         });
         if (response.ok) {
           setReservas(reservas.filter(res => res.id !== id));
@@ -100,6 +104,7 @@ const AdminDashboard = () => {
       };
 
      const response = await fetch(`${API_URL}/api/v1/reservas/crear`, {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dataAEnviar)
       });
@@ -133,7 +138,7 @@ const AdminDashboard = () => {
       <div className="max-w-7xl mx-auto">
 
         {/* 1. CABECERA */}
-        <div className="flex flex-col md:flex-row justify-between items-center mb-10 bg-white p-8 rounded-[2rem] shadow-sm border border-orange-100 gap-4">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-6 bg-white p-8 rounded-[2rem] shadow-sm border border-orange-100 gap-4">
           <div>
             <h1 className="text-3xl font-serif font-bold text-rose-900">Panel Administrativo</h1>
             <p className="text-orange-800/60 font-light italic">Usuario: {adminName}</p>
@@ -151,6 +156,11 @@ const AdminDashboard = () => {
           </div>
         </div>
 
+        {/* 🟢 NUEVA SECCIÓN: MÉTRICAS DE TRÁFICO */}
+        <section className="mb-10">
+          <ContadorVisitasAdmin />
+        </section>
+
         {/* 2. GESTIÓN DE GALERÍA */}
         <section className="mb-16">
           <h2 className="text-xs uppercase tracking-[0.2em] font-black text-orange-500 mb-6 ml-4">📸 Galería de Fotos</h2>
@@ -160,7 +170,7 @@ const AdminDashboard = () => {
           </div>
         </section>
 
-        {/* 3. GESTIÓN DE PLANES (Incorporado ActualizarFotoPlan aquí) */}
+        {/* 3. GESTIÓN DE PLANES */}
         <section className="mb-16">
           <div className="flex justify-between items-center mb-6 px-4">
             <div>
@@ -191,14 +201,12 @@ const AdminDashboard = () => {
           </AnimatePresence>
 
           <GestionPlanes />
-
-          {/* Incorporación de ActualizarFotoPlan como herramienta de edición rápida */}
           <div className="mt-8">
             <ActualizarFotoPlan />
           </div>
         </section>
 
-        {/* 4. FORMULARIO DE RESERVA MANUAL (Con Labels legibles) */}
+        {/* 4. FORMULARIO DE RESERVA MANUAL */}
         <AnimatePresence>
           {mostrarForm && (
             <motion.div
@@ -209,6 +217,7 @@ const AdminDashboard = () => {
             >
               <h2 className="text-xl font-bold text-rose-900 mb-6">📝 Datos de la Reserva</h2>
               <form onSubmit={handleCrearReservaManual} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                {/* ... (resto del formulario igual) ... */}
                 <div>
                   <label className="block text-xs font-bold text-slate-800 mb-1 uppercase">Nombre</label>
                   <input type="text" required value={nuevaReserva.nombreCliente} 
@@ -297,7 +306,6 @@ const AdminDashboard = () => {
                             <button
                               onClick={() => handleCambiarEstado(reserva.id, 'CONFIRMADA')}
                               className="bg-green-500 hover:bg-green-600 text-white p-2 rounded-lg transition-all shadow-sm"
-                              title="Confirmar y Enviar Correo"
                             >
                               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -307,7 +315,6 @@ const AdminDashboard = () => {
                           <button
                             onClick={() => eliminarReserva(reserva.id)}
                             className="bg-rose-50 text-rose-400 hover:bg-rose-600 hover:text-white p-2 rounded-lg transition-all"
-                            title="Eliminar"
                           >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
