@@ -43,3 +43,39 @@ body::after {
   z-index: 10;
   background: transparent !important;
 }
+/* --- FORZAR COLORES CITA IDEAL --- */
+
+/* 1. Fondo de los días habilitados (Sábados, Domingos y Feriados) */
+.tucitaideal-calendar .react-datepicker__day:not(.react-datepicker__day--disabled):not(.react-datepicker__day--outside-month) {
+    background-color: #fff1f2 !important; /* Rosa muy claro de fondo */
+    color: #e11d48 !important;            /* Texto Rosa fuerte (Rose-600) */
+    font-weight: 800 !important;
+    border-radius: 0.5rem !important;
+}
+
+/* 2. El día que el usuario hace clic (Seleccionado) */
+.tucitaideal-calendar .react-datepicker__day--selected,
+.tucitaideal-calendar .react-datepicker__day--keyboard-selected {
+    background-color: #e11d48 !important; /* Rosa fuerte */
+    color: white !important;
+    transform: scale(1.1);
+}
+
+/* 3. Quitar el color blanco de fondo de los días deshabilitados */
+.tucitaideal-calendar .react-datepicker__day--disabled {
+    background-color: transparent !important;
+    color: #f1f5f9 !important; /* Gris casi invisible */
+    opacity: 0.3;
+}
+
+/* 4. Color de los nombres de los días (Lu, Ma, Mi...) */
+.tucitaideal-calendar .react-datepicker__day-name {
+    color: #f97316 !important; /* Naranja */
+    font-weight: bold !important;
+}
+
+/* 5. Hover: cuando pasas el mouse por un día disponible */
+.tucitaideal-calendar .react-datepicker__day:not(.react-datepicker__day--disabled):hover {
+    background-color: #fb7185 !important;
+    color: white !important;
+}
