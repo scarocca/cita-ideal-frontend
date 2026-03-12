@@ -8,13 +8,19 @@ registerLocale('es', es);
 
 const API_URL = "https://cita-ideal-backend.onrender.com";
 
+// 🇨🇱 Lista manual de Feriados Chile 2026 (Evita errores de CORS)
+const FERIADOS_CHILE_2026 = [
+  "2026-01-01", "2026-04-03", "2026-04-04", "2026-05-01", 
+  "2026-05-21", "2026-06-21", "2026-06-29", "2026-07-16", 
+  "2026-08-15", "2026-09-18", "2026-09-19", "2026-10-12", 
+  "2026-10-31", "2026-11-01", "2026-12-08", "2026-12-25"
+];
+
 const CalendarioDisponibilidad = ({ onFechaSeleccionada }) => {
   const [fechaSeleccionada, setFechaSeleccionada] = useState(null);
   const [fechasBloqueadas, setFechasBloqueadas] = useState([]);
-  const [feriadosChile, setFeriadosChile] = useState([]);
 
   useEffect(() => {
-    // 1. Cargar reservas (con manejo de 404)
     const fetchReservas = async () => {
       try {
         const res = await fetch(`${API_URL}/api/v1/reservas/fechas-bloqueadas`);
@@ -23,38 +29,18 @@ const CalendarioDisponibilidad = ({ onFechaSeleccionada }) => {
           if (Array.isArray(data)) {
             setFechasBloqueadas(data.map(f => parseISO(f)).filter(d => isValid(d)));
           }
-        } else {
-          console.warn("Endpoint de reservas no encontrado (404). Revisa el Controller en Java.");
         }
-      } catch (e) { console.error("Error conexión Backend:", e); }
+      } catch (e) { console.error("Error al cargar reservas del backend:", e); }
     };
-
-    // 2. Cargar feriados usando un proxy para evitar CORS
-    const fetchFeriados = async () => {
-      try {
-        // Probamos con esta API que suele ser más amigable con CORS
-        const res = await fetch('https://feriados-cl-api.herokuapp.com/feriados/2026');
-        const data = await res.json();
-        if (Array.isArray(data)) {
-          setFeriadosChile(data.map(f => f.fecha));
-        }
-      } catch (e) { 
-        console.error("Error feriados (CORS): Usando solo fines de semana por ahora."); 
-      }
-    };
-
     fetchReservas();
-    fetchFeriados();
   }, []);
 
   const esDiaHabilitado = (date) => {
     const day = getDay(date);
     const fechaString = format(date, 'yyyy-MM-dd');
 
-    // Sábado o Domingo siempre habilitados
-    const esFinDeSemana = (day === 0 || day === 6);
-    // Feriado solo si la API respondió, si no, solo fin de semana
-    const esFeriado = feriadosChile.length > 0 ? feriadosChile.includes(fechaString) : false;
+    const esFinDeSemana = (day === 0 || day === 6); // Sábado o Domingo
+    const esFeriado = FERIADOS_CHILE_2026.includes(fechaString);
 
     return esFinDeSemana || esFeriado;
   };
@@ -74,9 +60,9 @@ const CalendarioDisponibilidad = ({ onFechaSeleccionada }) => {
         excludeDates={fechasBloqueadas}
         calendarClassName="tucitaideal-calendar"
       />
-      <p className="mt-4 text-[9px] text-rose-900/40 uppercase font-black tracking-widest text-center">
-        Disponibilidad: Sábados, Domingos y Festivos
-      </p>
+      <div className="mt-4 text-[9px] text-rose-900/40 uppercase font-black tracking-widest text-center leading-tight">
+        * Atención: Fines de semana <br/> y días festivos en Chile
+      </div>
     </div>
   );
 };
