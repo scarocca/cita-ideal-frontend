@@ -9,10 +9,15 @@ const ContadorVisitasAdmin = () => {
   useEffect(() => {
     const fetchVisits = async () => {
       try {
-        // Si tienes seguridad activa, aquí deberías agregar el header de Authorization
         const response = await fetch(`${API_URL}/api/visits/total`);
         const data = await response.json();
-        setTotalVisitas(data);
+        
+        // CORRECCIÓN AQUÍ: 
+        // Si data es un objeto como {total: 5}, extraemos el número. 
+        // Si ya es un número, lo usamos directamente.
+        const valorFinal = (data && typeof data === 'object') ? data.total : data;
+        
+        setTotalVisitas(valorFinal || 0);
       } catch (error) {
         console.error("Error al obtener visitas:", error);
       } finally {
