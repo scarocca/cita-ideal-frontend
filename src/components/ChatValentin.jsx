@@ -110,7 +110,7 @@ const ChatValentin = ({ onClose }) => {
         className="flex-grow overflow-y-auto p-5 space-y-4 bg-gradient-to-b from-rose-50/50 to-white"
       >
         <div className="bg-white border border-rose-100 p-3 rounded-2xl rounded-tl-none text-[12px] text-rose-900 shadow-sm leading-relaxed font-medium">
-          ¡Hola Sergio! Soy Valentín. Estoy aquí para ayudarte a crear la cita perfecta. ¿Tienes alguna duda? 💖
+          ¡Hola soy Valentín. Estoy aquí para ayudarte a crear la cita perfecta. ¿Tienes alguna duda? 💖
         </div>
 
         {historial.map((h, i) => (

@@ -1,81 +1,78 @@
 @import "tailwindcss";
+@import "react-datepicker/dist/react-datepicker.css";
 
-/* 1. Fondo base crema suave */
+/* 1. CONFIGURACIÓN GLOBAL */
 html, body {
   margin: 0;
   padding: 0;
   background-color: #fafaf9 !important;
-  position: relative;
-  min-height: 100vh;
+  font-family: 'Outfit', sans-serif;
+  color: #1e293b;
 }
 
-/* 2. CAPA ARTÍSTICA PURIFICADA: 😍 + 💖 (Cero Pétalos) */
+/* 2. CAPA ARTÍSTICA (FONDO) */
 body::after {
-  content: "" !important;
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: 5 !important;
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
   pointer-events: none;
-  
-  /* Ajustamos la opacidad para que sean sutiles (0.1 a 0.2) */
-  opacity: 0.15; 
-
-  /* DOS CAPAS DE DIBUJO DESFASADAS PARA ROMPER LA CUADRÍCULA */
+  opacity: 0.15;
   background-image: 
-    /* CAPA A: Emoji 😍 (separados por 250px) */
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 100 100'%3E%3Ctext y='32' font-size='16'%3E😍%3C/text%3E%3C/svg%3E"),
-    
-    /* CAPA B: Corazones Sólidos (separados por 180px) */
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 100 100'%3E%3Cpath fill='%23e11d48' d='M30 35.35l-1.45-1.32C23.4 29.36 20 26.28 20 22.5 20 19.42 22.42 17 25.5 17c1.74 0 3.41.81 4.5 2.09C31.09 17.81 32.76 17 34.5 17 37.58 17 40 19.42 40 22.5c0 3.78-3.4 6.86-8.55 11.54L30 35.35z'/%3E%3C/svg%3E");
-
-  /* Posiciones iniciales para que NO coincidan */
-  background-position: 20% 20%, 60% 75%;
-  background-repeat: repeat;
-  
-  /* Tamaños diferentes para efecto esparcido */
-  background-size: 250px 250px, 180px 180px;
   background-attachment: fixed;
 }
 
-/* 3. Tu App encima de todo */
-#root {
-  position: relative;
-  z-index: 10;
-  background: transparent !important;
-}
-/* --- FORZAR COLORES CITA IDEAL --- */
+/* 3. SISTEMA DE PORTALES */
+#root { position: relative; z-index: 10; }
+#modal-root { position: relative; z-index: 100000; }
 
-/* 1. Fondo de los días habilitados (Sábados, Domingos y Feriados) */
-.tucitaideal-calendar .react-datepicker__day:not(.react-datepicker__day--disabled):not(.react-datepicker__day--outside-month) {
-    background-color: #fff1f2 !important; /* Rosa muy claro de fondo */
-    color: #e11d48 !important;            /* Texto Rosa fuerte (Rose-600) */
-    font-weight: 800 !important;
-    border-radius: 0.5rem !important;
+/* 4. PERSONALIZACIÓN DEL CALENDARIO (REGLAS FIJAS) */
+.tucitaideal-calendar {
+  background-color: white !important;
+  border: 2px solid #ffe4e6 !important;
+  border-radius: 1.5rem !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+  overflow: hidden;
+  pointer-events: auto !important;
 }
 
-/* 2. El día que el usuario hace clic (Seleccionado) */
-.tucitaideal-calendar .react-datepicker__day--selected,
-.tucitaideal-calendar .react-datepicker__day--keyboard-selected {
-    background-color: #e11d48 !important; /* Rosa fuerte */
-    color: white !important;
-    transform: scale(1.1);
+/* Números y Mes siempre legibles */
+.react-datepicker__day, 
+.react-datepicker__day-name, 
+.react-datepicker__current-month {
+  color: #1e293b !important;
+  font-weight: 600 !important;
 }
 
-/* 3. Quitar el color blanco de fondo de los días deshabilitados */
-.tucitaideal-calendar .react-datepicker__day--disabled {
-    background-color: transparent !important;
-    color: #f1f5f9 !important; /* Gris casi invisible */
-    opacity: 0.3;
+/* Días Disponibles (Fines de semana y Feriados) */
+.react-datepicker__day:not(.react-datepicker__day--disabled):not(.react-datepicker__day--outside-month) {
+  background-color: #fff1f2 !important;
+  color: #e11d48 !important;
+  font-weight: 800 !important;
+  border-radius: 0.5rem !important;
 }
 
-/* 4. Color de los nombres de los días (Lu, Ma, Mi...) */
-.tucitaideal-calendar .react-datepicker__day-name {
-    color: #f97316 !important; /* Naranja */
-    font-weight: bold !important;
+/* Días Deshabilitados */
+.react-datepicker__day--disabled {
+  color: #cbd5e1 !important;
+  background-color: transparent !important;
+  opacity: 0.4 !important;
 }
 
-/* 5. Hover: cuando pasas el mouse por un día disponible */
-.tucitaideal-calendar .react-datepicker__day:not(.react-datepicker__day--disabled):hover {
-    background-color: #fb7185 !important;
-    color: white !important;
+/* Día Seleccionado */
+.react-datepicker__day--selected {
+  background-color: #e11d48 !important;
+  color: white !important;
+}
+
+/* Navegación (Flechas) */
+.react-datepicker__navigation {
+  z-index: 100 !important;
+  top: 8px !important;
+}
+.react-datepicker__navigation-icon::before {
+  border-color: #f97316 !important;
+  border-width: 3px 3px 0 0 !important;
 }

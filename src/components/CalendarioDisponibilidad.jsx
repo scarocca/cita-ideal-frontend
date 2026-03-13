@@ -8,7 +8,6 @@ registerLocale('es', es);
 
 const API_URL = "https://cita-ideal-backend.onrender.com";
 
-// 🇨🇱 Lista manual de Feriados Chile 2026 (Evita errores de CORS)
 const FERIADOS_CHILE_2026 = [
   "2026-01-01", "2026-04-03", "2026-04-04", "2026-05-01", 
   "2026-05-21", "2026-06-21", "2026-06-29", "2026-07-16", 
@@ -30,7 +29,7 @@ const CalendarioDisponibilidad = ({ onFechaSeleccionada }) => {
             setFechasBloqueadas(data.map(f => parseISO(f)).filter(d => isValid(d)));
           }
         }
-      } catch (e) { console.error("Error al cargar reservas del backend:", e); }
+      } catch (e) { console.error("Error al cargar reservas:", e); }
     };
     fetchReservas();
   }, []);
@@ -38,15 +37,17 @@ const CalendarioDisponibilidad = ({ onFechaSeleccionada }) => {
   const esDiaHabilitado = (date) => {
     const day = getDay(date);
     const fechaString = format(date, 'yyyy-MM-dd');
-
-    const esFinDeSemana = (day === 0 || day === 6); // Sábado o Domingo
+    const esFinDeSemana = (day === 0 || day === 6);
     const esFeriado = FERIADOS_CHILE_2026.includes(fechaString);
-
     return esFinDeSemana || esFeriado;
   };
 
   return (
-    <div className="p-4 bg-white rounded-[2rem] border border-orange-100 flex flex-col items-center shadow-inner">
+    <div 
+      className="p-4 bg-white rounded-[2rem] border border-orange-100 flex flex-col items-center shadow-inner pointer-events-auto"
+      onClick={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+    >
       <DatePicker
         selected={fechaSeleccionada}
         onChange={(date) => {

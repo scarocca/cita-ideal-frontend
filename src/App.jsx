@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import ReactDOM from 'react-dom';
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion'; 
+import { AnimatePresence } from 'framer-motion'; 
 
 // Componentes
 import VisitTracker from './components/VisitTracker';
@@ -28,7 +27,6 @@ const ScrollToTop = () => {
 
 function App() {
   const [planes, setPlanes] = useState([]);
-  const [planSeleccionado, setPlanSeleccionado] = useState(null);
   const [chatAbierto, setChatAbierto] = useState(false);
 
   useEffect(() => {
@@ -56,44 +54,18 @@ function App() {
       <div className="min-h-screen bg-transparent flex flex-col pt-20">
         <div className="flex-grow">
           <Routes>
+            {/* VISTA PRINCIPAL (HOME) */}
             <Route path="/" element={
               <>
                 <Hero />
                 <main className="relative z-10">
-                  <Gallery
-                    planes={planes}
-                    onVerDetalle={(plan) => setPlanSeleccionado(plan)}
-                  />
-
-                  {/* PORTAL PARA MODAL DE DETALLE DE PLAN */}
-                  <AnimatePresence>
-                    {planSeleccionado && ReactDOM.createPortal(
-                      <div className="fixed inset-0 z-[100000] flex items-center justify-center p-4">
-                        <motion.div 
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          onClick={() => setPlanSeleccionado(null)}
-                          className="absolute inset-0 bg-black/80 backdrop-blur-md"
-                        />
-                        <motion.div 
-                          initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                          animate={{ opacity: 1, scale: 1, y: 0 }}
-                          exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                          className="bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-[2.5rem] shadow-2xl relative z-[100001]"
-                        >
-                          <PlanDetalle
-                            plan={planSeleccionado} 
-                            onClose={() => setPlanSeleccionado(null)}
-                          />
-                        </motion.div>
-                      </div>,
-                      document.getElementById('modal-root')
-                    )}
-                  </AnimatePresence>
+                  <Gallery planes={planes} />
                 </main>
               </>
             } />
+
+            {/* 🆕 NUEVA RUTA DINÁMICA PARA EL DETALLE */}
+            <Route path="/plan/:id" element={<PlanDetalle planes={planes} />} />
 
             <Route path="/galeria" element={<GaleriaFotos />} />
             <Route path="/login" element={<Login />} />
@@ -109,19 +81,16 @@ function App() {
           </Routes>
         </div>
 
-        {/* 🆕 CHAT DE VALENTÍN COMO VENTANA PEQUEÑA FLOTANTE */}
+        {/* CHAT DE VALENTÍN */}
         <AnimatePresence>
           {chatAbierto && (
-            <div className="fixed bottom-24 right-6 z-[9999] pointer-events-auto">
-              <ChatValentin 
-                key="chat-valentin-modal" 
-                onClose={() => setChatAbierto(false)} 
-              />
+            <div className="fixed bottom-24 right-6 z-[9999]">
+              <ChatValentin onClose={() => setChatAbierto(false)} />
             </div>
           )}
         </AnimatePresence>
 
-        {/* BOTÓN FLOTANTE (Abajo del chat) */}
+        {/* BOTÓN FLOTANTE */}
         {!chatAbierto && (
           <button 
             type="button"
