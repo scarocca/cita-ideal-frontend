@@ -47,6 +47,7 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
+      {/* Efecto de cursor moderno */}
       <SplashCursor SPLAT_RADIUS={0.3} CURL={2} DENSITY_DISSIPATION={3} />
       <VisitTracker /> 
       <Navbar />
@@ -54,9 +55,9 @@ function App() {
       <div className="min-h-screen bg-transparent flex flex-col pt-20">
         <div className="flex-grow">
           <Routes>
-            {/* VISTA PRINCIPAL (HOME) */}
             <Route path="/" element={
               <>
+                {/* Aquí dentro de Hero ya vive tu CircularText de React Bits */}
                 <Hero />
                 <main className="relative z-10">
                   <Gallery planes={planes} />
@@ -64,9 +65,7 @@ function App() {
               </>
             } />
 
-            {/* 🆕 NUEVA RUTA DINÁMICA PARA EL DETALLE */}
             <Route path="/plan/:id" element={<PlanDetalle planes={planes} />} />
-
             <Route path="/galeria" element={<GaleriaFotos />} />
             <Route path="/login" element={<Login />} />
             
@@ -81,16 +80,17 @@ function App() {
           </Routes>
         </div>
 
-        {/* CHAT DE VALENTÍN */}
+        {/* --- INTERFAZ FLOTANTE (CHAT, INSTAGRAM, BOTONES) --- */}
+        
         <AnimatePresence>
           {chatAbierto && (
-            <div className="fixed bottom-24 right-6 z-[9999]">
+            <div className="fixed bottom-24 right-6 z-[10000]">
               <ChatValentin onClose={() => setChatAbierto(false)} />
             </div>
           )}
         </AnimatePresence>
 
-        {/* BOTÓN FLOTANTE */}
+        {/* Botón de Valentín (Chat) */}
         {!chatAbierto && (
           <button 
             type="button"
@@ -104,6 +104,24 @@ function App() {
           </button>
         )}
 
+        {/* Botón de Instagram - Reposicionado para no chocar */}
+        <a 
+          href="https://instagram.com/tucitaideal.cl" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="fixed bottom-28 right-8 md:bottom-32 z-50 bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white w-12 h-12 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-all active:scale-95 group"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+          <span className="absolute right-16 bg-white text-gray-800 text-[10px] font-bold px-2 py-1 rounded shadow-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+            ¡Síguenos! 📸
+          </span>
+        </a>
+
+        {/* FOOTER */}
         <footer className="py-12 bg-white/50 backdrop-blur-sm border-t border-orange-100 text-center relative z-10">
           <p className="text-[10px] uppercase tracking-[0.3em] text-rose-900/60 font-bold mb-2">
             Tu Cita Ideal — Experiencias Románticas
@@ -112,33 +130,6 @@ function App() {
             &copy; 2026 — Sergio Carocca Dev
           </p>
         </footer>
-        {/* Botón Flotante de Instagram */}
-<a 
-  href="https://instagram.com/tucitaideal.cl" 
-  target="_blank" 
-  rel="noopener noreferrer"
-  className="fixed bottom-24 right-6 z-50 bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-all active:scale-95 group"
->
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    width="28" height="28" 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="2" 
-    strokeLinecap="round" 
-    strokeLinejoin="round"
-  >
-    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-  </svg>
-  
-  {/* Tooltip opcional */}
-  <span className="absolute right-16 bg-white text-gray-800 text-[10px] font-bold px-2 py-1 rounded shadow-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-    ¡Síguenos en Instagram! 📸
-  </span>
-</a>
       </div>
     </Router>
   );

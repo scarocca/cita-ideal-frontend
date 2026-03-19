@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import ShinyText from './ShinyText';
+
 
 const Hero = () => {
   const palabras = [
@@ -36,10 +38,11 @@ const Hero = () => {
           Experiencias que enamoran
         </motion.span>
 
-        {/* H1 CORREGIDO Y RESPONSIVO */}
-        <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-serif font-bold text-rose-900 mb-6 drop-shadow-sm leading-tight">
-          Tu <span className="text-rose-600">Cita</span><span className="text-orange-500 italic">Ideal</span>
-        </h1>
+       <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-serif font-bold mb-6 drop-shadow-sm leading-tight flex flex-wrap justify-center gap-x-3 md:gap-x-5">
+  <ShinyText text="Tu" color="#4c0519" shineColor="#fb7185" speed={3} />
+  <ShinyText text="Cita" color="#e11d48" shineColor="#ffffff" speed={3} />
+  <ShinyText text="Ideal" color="#f97316" shineColor="#ffedd5" speed={3} className="italic" />
+</h1>
 
         {/* TEXTO DINÁMICO RESPONSIVO */}
         <div className="h-20 md:h-24 mb-8 flex items-center justify-center">

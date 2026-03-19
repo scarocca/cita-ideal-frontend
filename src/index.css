@@ -76,3 +76,10 @@ body::after {
   border-color: #f97316 !important;
   border-width: 3px 3px 0 0 !important;
 }
+.shiny-text {
+  display: inline-block;
+  background-clip: text;
+  -webkit-background-clip: text;
+  /* Importante para que no se corte el brillo en letras grandes */
+  padding-right: 0.1em; 
+}
