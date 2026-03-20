@@ -30,14 +30,14 @@ const Hero = () => {
       </div>
 
       <div className="relative z-10 max-w-5xl">
-        <motion.span 
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-orange-600 font-bold tracking-[0.2em] md:tracking-[0.3em] uppercase text-[10px] md:text-xs mb-4 md:mb-6 block"
-        >
-          Experiencias que enamoran
-        </motion.span>
-
+     <motion.span 
+  initial={{ opacity: 0, filter: "blur(5px)" }}
+  animate={{ opacity: 1, filter: "blur(0px)" }}
+  transition={{ duration: 1 }}
+  className="block mb-4 md:mb-6 text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] text-orange-400 drop-shadow-[0_0_8px_rgba(251,146,60,0.4)]"
+>
+  ✨ Experiencias que enamoran
+</motion.span>
        <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-serif font-bold mb-6 drop-shadow-sm leading-tight flex flex-wrap justify-center gap-x-3 md:gap-x-5">
   <ShinyText text="Tu" color="#4c0519" shineColor="#fb7185" speed={3} />
   <ShinyText text="Cita" color="#e11d48" shineColor="#ffffff" speed={3} />

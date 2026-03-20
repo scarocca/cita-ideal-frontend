@@ -131,7 +131,7 @@ function App() {
             Tu Cita Ideal — Experiencias Románticas
           </p>
           <p className="text-[9px] uppercase tracking-[0.1em] text-orange-900/40">
-            &copy; 2026 — Sergio Carocca Dev
+            &copy; 2026 — Nebula artCode
           </p>
         </footer>
       </div>
