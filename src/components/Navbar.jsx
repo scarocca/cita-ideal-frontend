@@ -11,7 +11,7 @@ const Navbar = () => {
   const linkClass = "hover:text-rose-600 transition-all flex items-center gap-2 group text-sm uppercase tracking-widest font-medium text-rose-800/80";
 
   return (
-    <nav className="fixed top-0 w-full z-[100] bg-white/80 backdrop-blur-md border-b border-rose-100/50 h-20 flex items-center">
+    <nav className="absolute top-0 w-full z-[100] bg-transparent border-rose-100/50 h-20 flex items-center">
       <div className="max-w-7xl mx-auto w-full px-6 flex justify-between items-center relative z-10">
         
         {/* LOGO + CORAZÓN LOGIN */}
@@ -31,7 +31,6 @@ const Navbar = () => {
             Inicio
           </NavHashLink>
 
-          {/* ✅ CORREGIDO: Ahora apunta a #experiencias */}
           <NavHashLink smooth to="/#experiencias" className={linkClass}>
             <span className="text-lg group-hover:scale-125 transition-transform duration-300">✨</span>
             Planes
@@ -42,7 +41,11 @@ const Navbar = () => {
             Galería
           </Link>
 
-          
+          {/* NUEVO: Enlace a Ubicación */}
+          <NavHashLink smooth to="/#ubicacion" className={linkClass}>
+            <span className="text-lg group-hover:scale-125 transition-transform duration-300">📍</span>
+            Ubicación
+          </NavHashLink>
         </div>
 
         {/* --- MOBILE BOTÓN --- */}
@@ -73,7 +76,6 @@ const Navbar = () => {
                 <span>🏠</span> Inicio
               </NavHashLink>
               
-              {/* ✅ CORREGIDO: También aquí a #experiencias */}
               <NavHashLink smooth to="/#experiencias" onClick={toggleMenu} className={linkClass}>
                 <span>✨</span> Planes
               </NavHashLink>
@@ -82,7 +84,10 @@ const Navbar = () => {
                 <span>📸</span> Galería
               </Link>
 
-              
+              {/* NUEVO: Ubicación en Mobile */}
+              <NavHashLink smooth to="/#ubicacion" onClick={toggleMenu} className={linkClass}>
+                <span>📍</span> Ubicación
+              </NavHashLink>
             </div>
           </motion.div>
         )}  

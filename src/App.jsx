@@ -14,6 +14,7 @@ import AdminDashboard from './components/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import SplashCursor from './components/SplashCursor';
 import ChatValentin from './components/ChatValentin'; 
+import UbicacionSeccion from './components/UbicacionSeccion';
 
 const API_URL = "https://cita-ideal-backend.onrender.com";
 
@@ -120,6 +121,9 @@ function App() {
             ¡Síguenos! 📸
           </span>
         </a>
+        <section id="ubicacion" className="scroll-mt-20">
+        <UbicacionSeccion />
+        </section>
 
         {/* FOOTER */}
         <footer className="py-12 bg-white/50 backdrop-blur-sm border-t border-orange-100 text-center relative z-10">
